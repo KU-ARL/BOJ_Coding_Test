@@ -1,17 +1,11 @@
 #include <iostream>
 using namespace std;
 
-int main() {
+int main(void) {
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 
-	int num;
-	int sum = 0;
-
-	for (int i=0 ; i<2;i++) {
-		cin >> num;
-		sum += num;
-	}
-	
-	cout << sum;
+	int a, b;
+	cin >> a >> b;
+	cout << a+b;
 }
