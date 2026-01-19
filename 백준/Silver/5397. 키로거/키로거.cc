@@ -1,37 +1,74 @@
-#include <iostream>
-#include <list>
+#include <bits/stdc++.h>
 using namespace std;
 
-int main(void) {
-	ios::sync_with_stdio(0);
-	cin.tie(0);
+const int MX = 1000005;
+char dat[MX]; 
+int pre[MX], nxt[MX];
+int unused = 1;
 
-	int N;
-	cin >> N;
+void insert(int addr, char num) {
+  dat[unused] = num;
+  pre[unused] = addr;
+  nxt[unused] = nxt[addr];
 
-	for (int i=0; i<N; i++) {
-		string s;
-		cin >> s;
+  if(nxt[addr]!=-1) pre[nxt[addr]] = unused;
+  nxt[addr] = unused;
 
-		list<char> L;
-		auto cursor = L.begin();
-
-		for(auto i: s) {
-			if (i=='<') {
-				if (cursor!=L.begin()) cursor--;
-			} else if (i=='>') {
-				if (cursor!=L.end()) cursor++;
-			} else if (i=='-') {
-				if (cursor!=L.begin()) {
-					cursor--;
-					cursor=L.erase(cursor);
-				}
-			} else {
-				L.insert(cursor, i);
-			}
-		}
-
-		for(auto l: L) cout << l;
-		cout << '\n';
-	}
+  unused++;
 }
+
+void erase(int addr) {
+  nxt[pre[addr]] = nxt[addr];
+  if(nxt[addr]!=-1) pre[nxt[addr]] = pre[addr];
+}
+
+void traverse() {
+  int cur = nxt[0];
+  while(cur!=-1) {
+    cout << dat[cur];
+    cur = nxt[cur];
+  }
+}
+
+
+
+int main(void) {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  int N;
+  cin >> N;
+
+  while(N--) {
+       
+    pre[0] = -1;
+    nxt[0] = -1;
+    unused = 1;
+
+    string S;
+    cin >> S;
+
+    int t=0;
+
+    for(auto s: S) {
+
+      if (s == '<') {
+        if(pre[t]!=-1) t=pre[t];
+      } else if (s == '>') {
+        if(nxt[t]!=-1) t=nxt[t];
+      } else if (s == '-') {
+        if(t!=0) {
+          erase(t);
+          t=pre[t];
+        }
+      } else {
+        insert(t, s);
+        t=nxt[t];
+      }
+    }
+
+    traverse();
+    cout << '\n';
+  }
+}
+
