@@ -22,8 +22,7 @@ int main(void) {
 
   long long total = 0;
 
-  int len = S.size();
-  for(int i=0; i<len;i++) {
+  while(S.size()!=0) {
     total += S.top();
     S.pop();
   }
