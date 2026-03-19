@@ -4,11 +4,11 @@ using namespace std;
 #define X first
 #define Y second
 
-int board[502][502];
-int vis[502][502];
+int board[105][105];
+int vis[105][105];
 
 int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
+int dy[4] = {0, -1, 0, 1};
 
 int main(void) {
     ios::sync_with_stdio(0);
@@ -21,7 +21,7 @@ int main(void) {
         string input;
         cin >> input;
 
-        for(int j=0; j<m; j++) {
+        for(int j=0; j<input.size();j++) {
             board[i][j] = input[j] - '0';
         }
     }
@@ -29,23 +29,23 @@ int main(void) {
     queue<pair<int, int>> Q;
     Q.push({0, 0});
     vis[0][0] = 1;
-
+    
     while(!Q.empty()) {
         pair<int, int> cur = Q.front();
         Q.pop();
 
-        for(int dir=0; dir<4; dir++) {
-            int nx = cur.X + dx[dir];
-            int ny = cur.Y + dy[dir];
+        for(int i=0;i<4;i++) {
+            int nx = cur.X + dx[i];
+            int ny = cur.Y + dy[i];
 
-            if(nx<0 || nx>=n || ny<0 || ny>=m) continue;
-            if(board[nx][ny]==0 || vis[nx][ny]!=0) continue;
+            if(nx <0 || nx >= n || ny <0 || ny >=m) continue;
+            if(board[nx][ny] == 0 || vis[nx][ny] != 0) continue;
 
-            vis[nx][ny] = vis[cur.X][cur.Y] + 1;
             Q.push({nx, ny});
+            vis[nx][ny] = vis[cur.X][cur.Y]+1;
         }
     }
 
-    cout << vis[n-1][m-1] << '\n';
+    cout << vis[n-1][m-1];
 
 }
