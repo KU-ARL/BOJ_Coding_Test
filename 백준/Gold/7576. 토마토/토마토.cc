@@ -4,11 +4,11 @@ using namespace std;
 #define X first
 #define Y second
 
-int board[1004][1004];
-int vis[1004][1004];
-
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
+
+int board[1005][1005];
+int vis[1005][1005];
 
 int main(void) {
     ios::sync_with_stdio(0);
@@ -17,62 +17,67 @@ int main(void) {
     int n, m;
     cin >> m >> n;
 
-    for(int i=0; i<n; i++) fill(vis[i], vis[i]+m, -1);
-
     queue<pair<int, int>> Q;
 
     for(int i=0; i<n; i++) {
         for(int j=0; j<m; j++) {
             cin >> board[i][j];
-
-            if(board[i][j] == 1) {
+            if(board[i][j]==1) {
                 Q.push({i, j});
-                vis[i][j] = 0;
-            }
-
-            if(board[i][j] == -1) {
-                vis[i][j] = -2;
+                vis[i][j] = 1;
+            } else if(board[i][j]==-1) {
+                vis[i][j]=-1;
             }
         }
     }
+
+    // cout << '\n';
+    // for(int i=0;i<n;i++) {
+    //     for(int j=0;j<m;j++) {
+    //         cout << board[i][j];
+    //     }
+    //     cout << '\n';
+
+    // }
+
+    // cout << '\n';
+    // for(int i=0;i<n;i++) {
+    //     for(int j=0;j<m;j++) {
+    //         cout << vis[i][j];
+    //     }
+    //     cout << '\n';
+
+    // }
 
     while(!Q.empty()) {
         pair<int, int> cur = Q.front();
         Q.pop();
 
-        for(int dir=0; dir<4; dir++) {
-            int nx = cur.X + dx[dir];
-            int ny = cur.Y + dy[dir];
+        for(int i=0; i<4; i++) {
+            int nx = cur.X + dx[i];
+            int ny = cur.Y + dy[i];
 
-            if(nx<0 || nx>=n || ny<0 || ny>=m) continue;
-            if(board[nx][ny]==-1 || board[nx][ny]==1 || vis[nx][ny]>0) continue;
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+            if(board[nx][ny] != 0 || vis[nx][ny] != 0) continue;
 
             vis[nx][ny] = vis[cur.X][cur.Y] + 1;
             Q.push({nx, ny});
         }
     }
 
-    // cout << "final vis" << '\n';
-    // for(int i=0; i<n; i++) {
-    //     for(int j=0; j<m; j++) {
-    //         cout << vis[i][j];
-    //     }
-    //     cout << '\n';
-    // }
+    int result = 0;
 
-
-    int mx = -1;
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<m; j++) {
-            mx = max(mx, vis[i][j]);
-            if(vis[i][j]==-1) {
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<m;j++) {
+            if(vis[i][j]==0) {
+                // cout << i << ',' << j << '\n';
                 cout << -1;
                 return 0;
             }
+
+            result = max(result, vis[i][j]);
         }
     }
 
-
-    cout << mx;
-
+    cout << result - 1;
 }
