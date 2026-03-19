@@ -3,7 +3,8 @@ using namespace std;
 
 int last[1500005];
 int price[1500005];
-int dp[1500005];
+
+int sum[1500005];
 
 int main(void) {
     ios::sync_with_stdio(0);
@@ -12,16 +13,15 @@ int main(void) {
     int N;
     cin >> N;
 
-    for (int i=1;i<=N;i++) {
+    for(int i=1;i<=N;i++) {
         cin >> last[i];
         cin >> price[i];
     }
-    
-    for (int i=1;i<=N+1;i++) {
-        dp[i] = max(dp[i], dp[i-1]);
-        dp[i+last[i]]=max(dp[i+last[i]], dp[i]+price[i]);
+
+    for(int i=1;i<=N+1;i++) {
+        sum[i] = max(sum[i-1], sum[i]);
+        if(i+last[i] <= N+1) sum[i+last[i]] = max(sum[i+last[i]], sum[i]+price[i]);
     }
 
-    cout << dp[N+1];
-
+    cout << sum[N+1];
 }
