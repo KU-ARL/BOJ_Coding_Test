@@ -1,36 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-long long num[10];
-long long tem[10];
+long long num[105][10];
+const int mod = 1000000000;
 
 int main(void) {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    num[0] = 0;
-    for (int i=1;i<=9;i++) num[i]=1;
-
     int N;
     cin >> N;
 
-    for (int i=2;i<=N;i++) {
-        tem[0] = num[1] % 1000000000;
-        tem[9] = num[8] % 1000000000;
+    num[1][0] = 0;
+    for(int i=1;i<=9;i++) num[1][i] = 1;
 
-        for (int j=1;j<9;j++) {
-            tem[j] = (num[j-1]+num[j+1]) % 1000000000;
+    for(int i=2;i<=N;i++) {
+        for(int j=0;j<=9;j++) {
+            if(j!=0) num[i][j] += num[i-1][j-1] % mod;
+            if(j!=9) num[i][j] += num[i-1][j+1] % mod;
         }
-
-        for (int j=0;j<=9;j++) {
-            num[j] = tem[j];
-        }   
-
     }
 
-    long long result = 0;
-    for (int i=0;i<=9;i++) {
-        result = (result+num[i]) % 1000000000;
-    }
-    cout << result;
+    long long ans = 0;
+    for(int i=0;i<=9;i++) ans += num[N][i] % mod;
+
+    cout << ans % mod;
 }
