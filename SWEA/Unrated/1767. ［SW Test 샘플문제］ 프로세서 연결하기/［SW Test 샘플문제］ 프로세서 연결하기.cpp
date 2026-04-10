@@ -113,6 +113,7 @@ int connect(int x, int y, int dir, int num) {
 }
 
 void dfs(int index, int coreCount, int wireLen) {
+    if(coreCount + (core.size() - index) < max_core) return;
     if (index == core.size()) {
     	if (max_core == coreCount) {
         	min_wire = min(min_wire, wireLen);
@@ -167,6 +168,7 @@ int main(int argc, char** argv)
 		for(int i=0;i<N;i++) {
             for(int j=0;j<N;j++) {
                 cin >> board[i][j];
+                if (i == 0 || i == N-1 || j == 0 || j == N-1) continue;
                 if (board[i][j] == 1) core.push_back({i, j});
             }
         }
